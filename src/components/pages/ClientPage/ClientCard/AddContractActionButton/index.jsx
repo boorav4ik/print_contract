@@ -10,12 +10,11 @@ const Index = ({ data }) => {
     <React.Fragment key={data.id}>
       <Button
         size="small"
-        color="primary"
         onClick={() => {
           setOpenDialog(true);
         }}
       >
-        + Add New Contract
+        + Add Record
       </Button>
       {openDialog && (
         <AddContractDialog

@@ -1,72 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
 } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+
 import PropTypes from 'prop-types';
 import Services from 'services/servicesApi';
+import ServicesDataGrid from './ServiceDataGrid';
 
 const Index = ({ open, onClose }) => {
-  const [serviceList, setServiceList] = useState([]);
-  const [servicesRendered, setServicesRendered] = useState([
-    { id: 0, title: '', coast: 0 },
+  const [services, setServises] = useState([
+    { id: 0, title: -1, coast: Infinity },
   ]);
+  const [options, setOptions] = useState([]);
 
   useEffect(() => {
     Services.getList()
-      .then(setServiceList)
+      .then(setOptions)
       .catch(() => {});
   }, []);
-  const columns = [
-    {
-      field: 'title',
-      headerName: 'Name of the service provided',
-      type: 'singleSelect',
-      valueOptions: serviceList.map(({ id, title }) => ({
-        value: id,
-        label: title,
-      })),
-      valueFormatter({ value }) {
-        console.log(this);
-        return (
-          serviceList.find(({ id }) => id === value)?.title ??
-          'Choose a service'
-        );
-      },
-      // onChange(event) {
-      //   console.log(event);
-      // },
-      flex: 1,
-      editable: true,
-      filterable: false,
-    },
-    {
-      field: 'coast',
-      headerName: 'Coast',
-      width: 150,
-      editable: false,
-      filterable: false,
-    },
-  ];
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xl">
       <DialogTitle>New Contract</DialogTitle>
       <DialogContent>
-        <Box sx={{ height: 400, width: '100%' }}>
-          <DataGrid
-            rows={servicesRendered}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            disableColumnSelector
-          />
-        </Box>
+        <ServicesDataGrid
+          rows={services}
+          options={options}
+          onServicesSelect={({ id, value }) => {
+            const list = JSON.parse(JSON.stringify(services));
+            const service = options.find((s) => s.id === value);
+            list[id] = { id, title: service.id, coast: service.user_id };
+            if (id + 1 === list.length) {
+              list.push({ id: id + 1, title: -1, coast: Infinity });
+            }
+            setServises(list);
+          }}
+        />
       </DialogContent>
       <DialogActions>
         <Button>Save</Button>
