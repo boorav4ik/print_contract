@@ -1,11 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
+import openDB from 'services/idb';
 import AppBar from '../components/AppBar';
 import ClientPage from '../components/pages/ClientPage';
 import './App.css';
-import addCustomers from '../services/indexedDB';
+
+openDB();
 
 export default function App() {
-  addCustomers();
   return (
     <>
       <AppBar />

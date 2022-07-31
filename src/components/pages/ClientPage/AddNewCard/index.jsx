@@ -10,9 +10,11 @@ import {
   Typography,
   TextField,
 } from '@mui/material';
+import addCustomer from 'services/customersApi';
 
 const Index = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [data, setData] = useState({});
   return (
     <>
       <Card sx={{ height: 160, textAlign: 'center' }}>
@@ -35,6 +37,11 @@ const Index = () => {
             <form
               id="add-client-form"
               style={{ display: 'flex', flexDirection: 'column' }}
+              onChange={(event) => {
+                event.preventDefault();
+                const { name, value } = event.target;
+                setData({ ...data, [name]: value });
+              }}
               // action="http://google.com"
             >
               <TextField
@@ -42,39 +49,60 @@ const Index = () => {
                 label="Surname"
                 variant="standard"
                 required
+                name="surname"
               />
               <TextField
                 id="client-name"
                 label="Name"
                 variant="standard"
                 required
+                name="name"
               />
               <TextField
                 id="client-second-name"
                 label="Second name"
                 variant="standard"
                 required
+                name="secondName"
               />
-              <TextField id="client-phone" label="Phone" variant="standard" />
-              <TextField id="client-email" label="E-mail" variant="standard" />
+              <TextField
+                id="client-phone"
+                label="Phone"
+                variant="standard"
+                name="phone"
+              />
+              <TextField
+                id="client-email"
+                label="E-mail"
+                variant="standard"
+                name="email"
+              />
               <TextField
                 id="client-pasport-id"
                 label="Pasport ID"
                 variant="standard"
                 required
+                name="passport"
               />
               <TextField
                 id="client-pasport-department"
                 label="By whom and when issued"
                 variant="standard"
                 required
+                name="pasport-department"
               />
               {/* <button type="submit">Find</button> */}
             </form>
           </DialogContent>
           <DialogActions>
-            <Button>Save</Button>
-            <Button>Print</Button>
+            <Button
+              onClick={() => {
+                setOpenDialog(false);
+                addCustomer(data);
+              }}
+            >
+              Create
+            </Button>
             <Button>Cancel</Button>
           </DialogActions>
         </Dialog>
