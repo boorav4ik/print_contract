@@ -1,5 +1,5 @@
-export default function createIndexedDB(name, version, schema) {
-  return new Promise((resolve, reject) => {
+export default (name, version, schema) =>
+  new Promise((resolve, reject) => {
     const request = window.indexedDB.open(name, version);
 
     request.onerror = (event) => reject(event);
@@ -20,4 +20,3 @@ export default function createIndexedDB(name, version, schema) {
       resolve(db);
     };
   });
-}

@@ -4,18 +4,20 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
+  IconButton,
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import AddContractActionButton from './AddContractActionButton';
-import ViewHistoryActionButton from './ViewHistoryActionButton';
+import Customer from 'services/customersApi';
+import { NoteAdd, Preview, Edit, Delete } from '@mui/icons-material';
 
-const Index = ({ data }) => (
+const Index = ({ data, onDelete }) => (
   <Card
     sx={{
       display: 'flex',
       flexDirection: 'column',
       height: 160,
+      justifyContent: 'space-between',
     }}
   >
     <CardActionArea>
@@ -31,20 +33,33 @@ const Index = ({ data }) => (
         >
           {data.email}
         </Typography>
-        <Typography
+        {/* <Typography
           variant="subtitle1"
           color="text.secondary"
           component="div"
           noWrap
         >
-          {data.gender} · {data.status}
-        </Typography>
+
+        </Typography> */}
       </CardContent>
     </CardActionArea>
 
-    <CardActions disableSpacing sx={{ padding: 0.5 }}>
-      <AddContractActionButton data={data} />
-      <ViewHistoryActionButton data={data} />
+    <CardActions
+      disableSpacing
+      sx={{ padding: 0.5, justifyContent: 'space-evenly' }}
+    >
+      <IconButton>
+        <NoteAdd />
+      </IconButton>
+      <IconButton>
+        <Preview />
+      </IconButton>
+      <IconButton>
+        <Edit />
+      </IconButton>
+      <IconButton onClick={onDelete}>
+        <Delete />
+      </IconButton>
     </CardActions>
   </Card>
 );
@@ -54,9 +69,8 @@ Index.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-    gender: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
   }).isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default Index;

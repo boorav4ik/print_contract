@@ -10,9 +10,10 @@ import {
   Typography,
   TextField,
 } from '@mui/material';
-import addCustomer from 'services/customersApi';
+import PropTypes from 'prop-types';
+import Customer from 'services/customersApi';
 
-const Index = () => {
+const Index = ({ refreshCustomers }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [data, setData] = useState({});
   return (
@@ -98,7 +99,8 @@ const Index = () => {
             <Button
               onClick={() => {
                 setOpenDialog(false);
-                addCustomer(data);
+                Customer.add(data);
+                refreshCustomers();
               }}
             >
               Create
@@ -111,4 +113,7 @@ const Index = () => {
   );
 };
 
+Index.propTypes = {
+  refreshCustomers: PropTypes.func.isRequired,
+};
 export default Index;

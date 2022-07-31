@@ -1,17 +1,22 @@
 import { Box, CircularProgress, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import Clients from 'services/clientApi';
+import Customer from 'services/customersApi';
 import ClientCard from './ClientCard';
 import AddNewCard from './AddNewCard';
 
 const Index = () => {
   const [clienst, setClientst] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    Clients.getList()
+
+  const loadData = () => {
+    setIsLoading(true);
+    return Customer.getAll()
       .then((data) => setClientst(data))
-      .catch()
       .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
 
   return (
@@ -29,7 +34,7 @@ const Index = () => {
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         <Grid item xs={2} sm={4} md={4} key={0}>
-          <AddNewCard />
+          <AddNewCard refreshCustomers={loadData} />
         </Grid>
 
         {isLoading ? (
@@ -37,7 +42,13 @@ const Index = () => {
         ) : (
           clienst.map((client) => (
             <Grid item xs={2} sm={4} md={4} key={client.id}>
-              <ClientCard data={client} />
+              <ClientCard
+                data={client}
+                onDelete={() => {
+                  Customer.delete(client.id);
+                  loadData();
+                }}
+              />
             </Grid>
           ))
         )}
