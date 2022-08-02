@@ -18,7 +18,7 @@ export default {
     options: { keyPath: 'id', autoIncrement: true },
     indexes: {
       name: { keyPath: 'name', options: { unique: true } },
-      cost: { keyPath: 'cost', options: { unique: false } },
+      cost: { keyPath: 'cost', options: { unique: false }, type: 'number' },
     },
   },
   records: {

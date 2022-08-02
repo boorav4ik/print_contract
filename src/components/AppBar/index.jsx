@@ -7,8 +7,8 @@ export default function Index() {
     <AppBar position="static">
       <Toolbar>
         <Link to="/clients">Clients</Link>
-
-        <Typography>Services</Typography>
+        <Link to="/services">Services</Link>
+        {/* <Typography>Services</Typography> */}
       </Toolbar>
     </AppBar>
   );

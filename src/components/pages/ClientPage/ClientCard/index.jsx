@@ -8,61 +8,61 @@ import {
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import Customer from 'services/customersApi';
 import { NoteAdd, Preview, Edit, Delete } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import Customer from '../../../../services/customersApi';
 
-const Index = ({ data, onDelete }) => (
-  <Card
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      height: 160,
-      justifyContent: 'space-between',
-    }}
-  >
-    <CardActionArea>
-      <CardContent sx={{ flex: '1 0 auto' }}>
-        <Typography component="div" variant="h5" noWrap>
-          {data.name}
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          color="text.secondary"
-          component="div"
-          noWrap
-        >
-          {data.email}
-        </Typography>
-        {/* <Typography
-          variant="subtitle1"
-          color="text.secondary"
-          component="div"
-          noWrap
-        >
-
-        </Typography> */}
-      </CardContent>
-    </CardActionArea>
-
-    <CardActions
-      disableSpacing
-      sx={{ padding: 0.5, justifyContent: 'space-evenly' }}
+const Index = ({ data, onDelete }) => {
+  const navigate = useNavigate();
+  return (
+    <Card
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: 160,
+        justifyContent: 'space-between',
+      }}
     >
-      <IconButton>
-        <NoteAdd />
-      </IconButton>
-      <IconButton>
-        <Preview />
-      </IconButton>
-      <IconButton>
-        <Edit />
-      </IconButton>
-      <IconButton onClick={onDelete}>
-        <Delete />
-      </IconButton>
-    </CardActions>
-  </Card>
-);
+      <CardActionArea
+        onClick={() =>
+          navigate('/clients/' + data.id, { replace: true, state: data })
+        }
+      >
+        <CardContent sx={{ flex: '1 0 auto' }}>
+          <Typography component="div" variant="h5" noWrap>
+            {data.name}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            component="div"
+            noWrap
+          >
+            {data.email}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+
+      <CardActions
+        disableSpacing
+        sx={{ padding: 0.5, justifyContent: 'space-evenly' }}
+      >
+        <IconButton>
+          <NoteAdd />
+        </IconButton>
+        <IconButton>
+          <Preview />
+        </IconButton>
+        <IconButton>
+          <Edit />
+        </IconButton>
+        <IconButton onClick={onDelete}>
+          <Delete />
+        </IconButton>
+      </CardActions>
+    </Card>
+  );
+};
 
 Index.propTypes = {
   data: PropTypes.shape({

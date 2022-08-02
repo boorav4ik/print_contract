@@ -11,7 +11,7 @@ import {
   TextField,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import Customer from 'services/customersApi';
+import Customer from '../../../../services/customersApi';
 
 const Index = ({ refreshCustomers }) => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -43,7 +43,6 @@ const Index = ({ refreshCustomers }) => {
                 const { name, value } = event.target;
                 setData({ ...data, [name]: value });
               }}
-              // action="http://google.com"
             >
               <TextField
                 id="client-surname"

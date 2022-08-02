@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import Customer from 'services/customersApi';
+import Customer from '../../../services/customersApi';
 import ClientCard from './ClientCard';
 import AddNewCard from './AddNewCard';
 
