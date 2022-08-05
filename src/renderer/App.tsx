@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import openDB from 'services/idb';
 import AppBar from '../components/AppBar';
 import ClientPage from '../components/pages/ClientPage';
@@ -12,6 +12,7 @@ export default function App() {
       <AppBar />
       <Routes>
         <Route path="/clients" element={<ClientPage />} />
+        <Route path="*" element={<Navigate to="/clients" replace />} />
       </Routes>
     </>
   );

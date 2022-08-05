@@ -4,14 +4,21 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
+  Chip,
   IconButton,
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import Customer from 'services/customersApi';
-import { NoteAdd, Preview, Edit, Delete } from '@mui/icons-material';
+import {
+  NoteAdd,
+  Preview,
+  Edit,
+  Delete,
+  Phone,
+  AlternateEmail,
+} from '@mui/icons-material';
 
-const Index = ({ data, onDelete }) => (
+const Index = ({ data, onDelete, ...props }) => (
   <Card
     sx={{
       display: 'flex',
@@ -23,24 +30,10 @@ const Index = ({ data, onDelete }) => (
     <CardActionArea>
       <CardContent sx={{ flex: '1 0 auto' }}>
         <Typography component="div" variant="h5" noWrap>
-          {data.name}
+          {[data.surname, data.name, data.secondName].join(' ')}
         </Typography>
-        <Typography
-          variant="subtitle1"
-          color="text.secondary"
-          component="div"
-          noWrap
-        >
-          {data.email}
-        </Typography>
-        {/* <Typography
-          variant="subtitle1"
-          color="text.secondary"
-          component="div"
-          noWrap
-        >
-
-        </Typography> */}
+        <Chip icon={<Phone />} label={data.phone} />
+        <Chip icon={<AlternateEmail />} label={data.email} />
       </CardContent>
     </CardActionArea>
 
@@ -68,7 +61,10 @@ Index.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    surname: PropTypes.string.isRequired,
+    secondName: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
 };

@@ -3,9 +3,7 @@ import openDB from './index';
 const READ_WRITE = 'readwrite';
 
 export default class IDBApi {
-  static store: string;
-
-  static add(data: Object) {
+  static add(data) {
     return openDB().then(
       (db) =>
         new Promise((resolve, reject) => {
