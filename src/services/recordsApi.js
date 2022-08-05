@@ -1,5 +1,5 @@
 import IDBApi from './idb/api';
 
-export default class Customer extends IDBApi {
+export default class Record extends IDBApi {
   static store = 'records';
 }

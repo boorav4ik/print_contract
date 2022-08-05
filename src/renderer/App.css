@@ -18,6 +18,10 @@ body {
   justify-content: center;
 }
 
+#root {
+  width: 100%;
+}
+
 button {
   background-color: white;
   padding: 10px 20px;

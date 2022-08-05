@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 
 import PropTypes from 'prop-types';
-import Services from 'services/servicesApi';
+import Services from '../../../../../services/servicesApi';
 import ServicesDataGrid from './ServiceDataGrid';
 
 const Index = ({ open, onClose }) => {
