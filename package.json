@@ -113,6 +113,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.0",
     "@mui/x-data-grid": "^5.13.0",
+    "@mui/x-date-pickers": "^5.0.0-beta.3",
     "axios": "^0.27.2",
     "docx": "^7.4.1",
     "electron-debug": "^3.2.0",
