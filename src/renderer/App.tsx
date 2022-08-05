@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import openDB from '../services/idb';
+import openDB from 'services/idb';
 import AppBar from '../components/AppBar';
 import ClientPage from '../components/pages/ClientPage';
 import ClientDiteilsPage from '../components/pages/ClientDiteilsPage';
@@ -14,7 +14,7 @@ export default function App() {
       <Routes>
         <Route
           path="/index.html"
-          element={<Navigate to="/clients" replace={true} />}
+          element={<Navigate to="/clients" replace />}
         />
         <Route path="/clients" element={<ClientPage />} />
         <Route path="/clients/:id" element={<ClientDiteilsPage />} />

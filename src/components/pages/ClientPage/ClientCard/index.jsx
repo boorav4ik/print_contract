@@ -8,9 +8,9 @@ import {
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+
 import { NoteAdd, Preview, Edit, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import Customer from '../../../../services/customersApi';
 
 const Index = ({ data, onDelete }) => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const Index = ({ data, onDelete }) => {
     >
       <CardActionArea
         onClick={() =>
-          navigate('/clients/' + data.id, { replace: true, state: data })
+          navigate(`/clients/${data.id}`, { replace: true, state: data })
         }
       >
         <CardContent sx={{ flex: '1 0 auto' }}>
@@ -68,7 +68,10 @@ Index.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    surname: PropTypes.string.isRequired,
+    secondName: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
 };
