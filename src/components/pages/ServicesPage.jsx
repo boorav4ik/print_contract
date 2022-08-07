@@ -13,27 +13,23 @@ import { DataGrid } from '@mui/x-data-grid';
 import Service from '../../services/servicesApi';
 
 const Index = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState([]);
   const [open, setOpen] = useState(false);
 
-  console.log(services);
   const loadServices = () =>
     Service.getAll()
       .then(setServices)
-      .catch(() => {})
-      .finally(() => setIsLoading(false));
+      .catch(() => {});
 
   useEffect(() => {
-    setIsLoading(true);
     loadServices();
   }, []);
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
+    <Box sx={{ marginTop: '.5em', width: '100%', height: 'calc(90% - .5em)' }}>
       <DataGrid
         columns={[
           { field: 'name', headerName: 'Название', flex: 1 },
-          { field: 'cost', headerName: 'Стоимость', width: 150 },
+          { field: 'cost', headerName: 'Стоимость', width: 100 },
         ]}
         rows={services}
       />

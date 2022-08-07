@@ -52,7 +52,7 @@ export default class IDBApi {
     );
   }
 
-  static get(id: number) {
+  static get(id) {
     return openDB().then(
       (db) =>
         new Promise((resolve) => {
@@ -60,7 +60,7 @@ export default class IDBApi {
           const store = tx.objectStore(this.store);
           const request = store.get(id);
 
-          request.onsuccess = ({ target: { result } }): void => resolve(result);
+          request.onsuccess = ({ target }) => resolve(target.result);
         })
     );
   }
