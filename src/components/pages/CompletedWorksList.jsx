@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import Service from '../../services/servicesApi';
 
 function findById(id) {
-  return function checkId(item) {
-    return id === item.id;
-  };
+  return (item) => id === item.id;
 }
+
 const CompletedWorksList = ({ workList, onEditCommit }) => {
   const [options, setOptions] = useState([]);
   useEffect(() => {
@@ -40,15 +39,13 @@ const CompletedWorksList = ({ workList, onEditCommit }) => {
       type: 'number',
     },
     {
-      field: 'coast',
+      field: 'total',
       headerName: 'Стоимость',
       width: 150,
       editable: false,
       filterable: false,
       valueGetter({ row }) {
-        if (row.name === '') return 0;
-        const service = options.find(findById(row.name));
-        return row.count * service.cost;
+        return row.name === '' ? 0 : row.count * row.cost;
       },
     },
   ];
@@ -61,7 +58,12 @@ const CompletedWorksList = ({ workList, onEditCommit }) => {
       onCellEditCommit={({ id, field, value }) => {
         const list = JSON.parse(JSON.stringify(workList));
         if (field === columns[0].field) {
-          list[id] = { ...list[id], name: value, count: list[id].count || 1 };
+          list[id] = {
+            ...list[id],
+            name: value,
+            count: list[id].count || 1,
+            cost: options.find(findById(value)).cost,
+          };
           if (list.length === id + 1) {
             list.push({ id: list.length, name: '', count: 0 });
           }
