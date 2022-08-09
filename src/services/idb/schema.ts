@@ -74,11 +74,10 @@ export const records = {
   indexes: {
     date: { keyPath: 'date', options: { unique: false } },
     customerId: { keyPath: 'customerId', options: { unique: false } },
-    services: {
-      keyPath: 'services',
-      options: { unique: false },
-      // options: { multiEntry: true },
-    },
+    // services: {
+    //   keyPath: 'services.id',
+    //   options: { unique: false, multiEntry: true },
+    // },
     description: { keyPath: 'description', options: { unique: false } },
   },
 };

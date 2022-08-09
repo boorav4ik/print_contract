@@ -1,22 +1,31 @@
-import { Add, Edit } from '@mui/icons-material';
+import { Add, Send, TextSnippet } from '@mui/icons-material';
 import {
   Box,
-  Button,
-  Fab,
   Grid,
+  Fab,
+  Paper,
   List,
   ListItem,
-  Modal,
-  Paper,
-  TextField,
+  ListItemText,
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  IconButton,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import Record from 'services/recordsApi';
 import Customer from '../../services/customersApi';
+import AddRecordDialog from './AddRecordDialog';
+import generateContract from '../../utils/generateContract';
 
 function useLocationState() {
   const location = useLocation();
   const [state, setState] = useState(location.state ?? {});
+
   useEffect(() => {
     if (!location.state)
       Customer.get(Number(location.pathname.split('/').at(-1))).then(setState);
@@ -25,47 +34,120 @@ function useLocationState() {
   return state;
 }
 
-const Index = (props) => {
+const Index = () => {
   const state = useLocationState();
 
-  const [openAddNewRecord, setOpenAddNewRecord] = useState(false);
+  const [records, setRecords] = useState([]);
+
+  function loadRecords() {
+    return Record.getAll().then((data) =>
+      setRecords(data.filter(({ customerId }) => customerId === state.id))
+    );
+  }
+
+  useEffect(() => {
+    if (state.id) {
+      loadRecords();
+    }
+  }, [state.id]);
+  console.log(state.id, records);
+  const [openDialog, setOpenDialog] = useState(false);
   return (
-    <Box
-      sx={{
-        paddingTop: 3,
-        width: '100%',
-        height: '100%',
-      }}
-    >
-      <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-        <Grid item xs={6}>
-          <Paper elevation={3}>
-            {[state.surname, state.name, state.secondName].join(' ')}
-          </Paper>
+    <>
+      <Box
+        sx={{
+          paddingTop: 3,
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+          <Grid item xs={6}>
+            <Paper elevation={3}>
+              {[state.surname, state.name, state.secondName].join(' ')}
+            </Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper elevation={3}>{`${state.email} ${state.phone}`}</Paper>
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Paper elevation={3}>{`${state.email} ${state.phone}`}</Paper>
-        </Grid>
-      </Grid>
-      <List>
-        <ListItem component={Paper}>
-          <form
-            style={{ width: '100%' }}
-            onSubmit={(event) => {
-              event.preventDefault();
-              console.log(event.target);
-            }}
-          >
-            <TextField fullWidth name="description" />
-            <br />
-            <br />
-            <input type="button" value="Акт выполненых работ" />
-            <input type="submit" value="Сохранить" />
-            <input type="reset" value="Отмена" />
-          </form>
-        </ListItem>
-      </List>
-    </Box>
+        <List>
+          {records.map(({ id, date, description, services }) => (
+            <ListItem
+              key={id}
+              secondaryAction={
+                services.length > 0 && (
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <IconButton
+                      color="secondary"
+                      onClick={() => generateContract(state, services)}
+                    >
+                      <TextSnippet />
+                    </IconButton>
+                    <IconButton color="primary">
+                      <Send />
+                    </IconButton>
+                  </Box>
+                )
+              }
+            >
+              <ListItemText
+                primary={description}
+                secondary={
+                  services.length > 0 && (
+                    <TableContainer
+                      component={Paper}
+                      sx={{ width: 'calc(100% - 40px)' }}
+                    >
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Наименование</TableCell>
+                            <TableCell>Количество</TableCell>
+                            <TableCell>Стоимость</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {services.map(({ name, cost, count }) => (
+                            <TableRow
+                              key={name}
+                              sx={{
+                                '&:last-child td, &:last-child th': {
+                                  border: 0,
+                                },
+                              }}
+                            >
+                              <TableCell component="th" scope="row">
+                                {name}
+                              </TableCell>
+                              <TableCell>{count}</TableCell>
+                              <TableCell>{count * cost}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  )
+                }
+              />
+            </ListItem>
+          ))}
+        </List>
+        <Fab
+          onClick={() => setOpenDialog(true)}
+          sx={{ bottom: 16, right: 16, position: 'absolute' }}
+        >
+          <Add />
+        </Fab>
+      </Box>
+      <AddRecordDialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        onSubmit={(data) =>
+          Record.add({ ...data, customerId: state.id }).then(loadRecords)
+        }
+      />
+    </>
   );
 };
 

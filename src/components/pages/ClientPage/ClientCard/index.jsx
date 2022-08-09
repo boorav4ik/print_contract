@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
-import { NoteAdd, Preview, Edit, Delete } from '@mui/icons-material';
+import { Edit, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const Index = ({ data, onDelete }) => {
@@ -47,12 +47,6 @@ const Index = ({ data, onDelete }) => {
         disableSpacing
         sx={{ padding: 0.5, justifyContent: 'space-evenly' }}
       >
-        <IconButton>
-          <NoteAdd />
-        </IconButton>
-        <IconButton>
-          <Preview />
-        </IconButton>
         <IconButton>
           <Edit />
         </IconButton>
